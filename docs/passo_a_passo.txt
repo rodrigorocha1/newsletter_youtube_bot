@@ -1,0 +1,2 @@
+1- Digitar o nome canal
+2 - cadastrar o canal no banco sqlite

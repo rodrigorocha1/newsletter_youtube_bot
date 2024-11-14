@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from src.service.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
@@ -27,7 +27,7 @@ class YoutubeService(IServiceAPI):
             return response['items'][0]['id']['channelId']
         return None
 
-    def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[str]:
+    def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[Tuple[str, str]]:
         data_inicio = data_inicio.isoformat() + 'Z'
 
         request = self.__youtube.search().list(
@@ -40,8 +40,10 @@ class YoutubeService(IServiceAPI):
 
         response = request.execute()
 
-        video_ids = list(map(lambda x: x['id']['videoId'], response['items']
-                             ))
+        video_ids = list(
+            map(lambda x: (x['id']['videoId'],
+                x['snippet']['title']), response['items'])
+        )
 
         return video_ids
 
