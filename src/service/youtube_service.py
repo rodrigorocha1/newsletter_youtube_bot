@@ -34,8 +34,7 @@ class YoutubeService(IServiceAPI):
             part="snippet",
             channelId=id_canal,
             order="date",
-            publishedAfter=data_inicio,
-            maxResults=10
+            publishedAfter=data_inicio
         )
 
         response = request.execute()
