@@ -1,9 +1,10 @@
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from src.service.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from datetime import datetime
+from youtube_transcript_api import YouTubeTranscriptApi
 
 load_dotenv()
 
@@ -14,11 +15,39 @@ class YoutubeService(IServiceAPI):
         self.__api_key = os.environ['YOUTUBE_API_KEY']
         self.__youtube = build('youtube', 'v3', developerKey=self.__api_key)
 
-    def obter_id_canal(nm_canal: str) -> Optional[str]:
-        pass
+    def obter_id_canal(self, nm_canal: str) -> Optional[str]:
+        request = self.__youtube.search().list(
+            part="snippet",
+            q=nm_canal,
+            type="channel",
+            maxResults=1
+        )
+        response = request.execute()
+        if 'items' in response and len(response['items']) > 0:
+            return response['items'][0]['id']['channelId']
+        return None
 
-    def obter_video_por_data(id_canal: str, data_inicio: datetime) -> List[Dict[str, Any]]:
-        pass
+    def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[str]:
+        data_inicio = data_inicio.isoformat() + 'Z'
 
-    def obter_transcricao_video(id_video: str) -> str:
-        return super().obter_transcricao_video()
+        request = self.__youtube.search().list(
+            part="snippet",
+            channelId=id_canal,
+            order="date",
+            publishedAfter=data_inicio,
+            maxResults=10
+        )
+
+        response = request.execute()
+
+        video_ids = list(map(lambda x: x['id']['videoId'], response['items']
+                             ))
+
+        return video_ids
+
+    def obter_transcricao_video(self, id_video: str) -> str:
+        transcricao = YouTubeTranscriptApi.get_transcript(
+            video_id=id_video, languages=['pt']
+        )
+        transcricao = '\n'.join([item['text'] for item in transcricao])
+        return transcricao
