@@ -10,14 +10,20 @@ class YoutubeController:
         self.__ia_agente = ia_agente
         self.__database = SessionLocal()
 
-    def obter_videos(self):
-        self.__database.
-
     def gravar_videos(self):
+        id_canal = self.__youtube.obter_id_canal()
+        lista_videos = self.__youtube.obter_video_por_data()
+        for id_video in lista_videos:
+            self.__youtube.obter_transcricao_video()
+
+    def listar_resumos(self):
         pass
 
-    def obter_canal(self):
+    def listar_videos(self):
         pass
 
     def gravar_canal(self):
+        pass
+
+    def listar_canal(self):
         pass
