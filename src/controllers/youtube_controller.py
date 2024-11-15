@@ -27,3 +27,6 @@ class YoutubeController:
 
     def listar_canal(self):
         pass
+
+    def atualizar_data(self):
+        pass
