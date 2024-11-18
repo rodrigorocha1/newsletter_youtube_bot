@@ -8,7 +8,7 @@ class DatabaseConnection:
 
     def __init__(self) -> None:
         self.__CAMINHO_BANCO = os.path.join(
-            os.getcwd(), 'database', 'youtube.dv'
+            os.getcwd(), 'database', 'youtube.db'
         )
         self.__DATABASE_URL = 'sqlite:///' + self.__CAMINHO_BANCO
         self.engine = create_engine(

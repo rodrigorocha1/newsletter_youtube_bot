@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple
-from src.service.iservice_api import IServiceAPI
+from src.service.youtube.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
 from googleapiclient.discovery import build

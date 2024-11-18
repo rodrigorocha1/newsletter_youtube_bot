@@ -1,4 +1,4 @@
-from src.service.youtube_service import YoutubeService
+from src.model.youtube_service import YoutubeService
 from datetime import datetime
 
 ys = YoutubeService()
@@ -18,3 +18,6 @@ for dados_video in lista_videos:
         print(ys.obter_transcricao_video(id_video=dados_video[0]))
     except:
         pass
+
+
+print('Escolha ')

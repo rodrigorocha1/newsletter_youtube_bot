@@ -1,4 +1,4 @@
-from src.service.youtube_service import YoutubeService
+from src.model.youtube_service import YoutubeService
 from datetime import datetime
 
 ys = YoutubeService()
