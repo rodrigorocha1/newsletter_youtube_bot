@@ -1,10 +1,10 @@
 from typing import List, Optional, Tuple
-from src.service.youtube.iservice_api import IServiceAPI
+from src.interfaces.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
-from googleapiclient.discovery import build
+from googleapiclient.discovery import build  # type: ignore
 from datetime import datetime
-from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api import YouTubeTranscriptApi  # type: ignore
 
 load_dotenv()
 
@@ -15,10 +15,10 @@ class YoutubeService(IServiceAPI):
         self.__api_key = os.environ['YOUTUBE_API_KEY']
         self.__youtube = build('youtube', 'v3', developerKey=self.__api_key)
 
-    def obter_id_canal(self, nm_canal: str):
+    def obter_id_canal(self, url_canal: str) -> Optional[Tuple[str, str]]:
         request = self.__youtube.search().list(
             part="snippet",
-            q=nm_canal,
+            q=url_canal,
             type="channel",
             maxResults=1
         )
@@ -28,13 +28,13 @@ class YoutubeService(IServiceAPI):
         return None
 
     def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[Tuple[str, str]]:
-        data_inicio = data_inicio.isoformat() + 'Z'
+        data_inicio_string: str = data_inicio.isoformat() + 'Z'
 
         request = self.__youtube.search().list(
             part="snippet",
             channelId=id_canal,
             order="date",
-            publishedAfter=data_inicio
+            publishedAfter=data_inicio_string
         )
 
         response = request.execute()

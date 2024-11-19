@@ -14,7 +14,7 @@ class ViewStreamlit:
 
     def gerar_input(self):
         with st.container(key='input_nome_canal'):
-            nome_canal = st.text_input(
+            url_canal = st.text_input(
                 'Digite o nome do canal',
                 placeholder='Ex: @TLESGames, @Sandeco'
             )
@@ -29,7 +29,7 @@ class ViewStreamlit:
                 st.write("Data e hora combinadas em formato ISO 8601:",
                          type(data_formatada))
 
-                self.__controler.gravar_canal(nome_canal=nome_canal)
+                self.__controler.gravar_canal(url_canal=url_canal)
 
     def rodar_dashboard(self):
         self.gerar_input()

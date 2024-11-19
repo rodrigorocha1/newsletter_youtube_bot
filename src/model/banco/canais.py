@@ -12,6 +12,7 @@ class Canais(Base):
     )
 
     nome_canal = Column(String)
+    url_canal = Column(String)
 
     def __repr__(self):
-        return f"<CANAIS(id_canal={self.id_canal}, nome_canal={self.nome_canal})>"
+        return f"<CANAIS(id_canal={self.id_canal}, nome_canal={self.nome_canal}, url_canal={self.url_canal})>"
