@@ -20,9 +20,11 @@ class ViewStreamlit:
             )
             d = st.date_input('Digite a data de públicação do vídeo',
                               datetime(2024, 10, 17, 19, 0, 46), format='DD/MM/YYYY')
+
+            tempo = st.time_input('Digite a hora de busca')
             botao_pequisar_canal = st.button('Cadastrar Canal')
             if botao_pequisar_canal:
-                tempo = st.time_input('Digite a hora de busca')
+
                 data_combinada = datetime.combine(d, tempo)
                 data_formatada = data_combinada.strftime("%Y-%m-%dT%H:%M:%SZ")
 
