@@ -23,6 +23,7 @@ class YoutubeController:
         id_canal, nome_canal = self.__youtube.obter_id_canal(
             url_canal=url_canal)
         if id_canal:
+            print('a', id_canal, nome_canal)
             self.__canal_model.inserir_canal(
                 id_canal=id_canal, nm_canal=nome_canal, url_canal=url_canal)
             return id_canal, nome_canal  # Canal inserido
@@ -30,6 +31,7 @@ class YoutubeController:
             return  # Canal não encontrado
 
     def gravar_video(self,  id_canal: str, data_inicio: datetime, nome_canal: str):
+        print(id_canal, data_inicio, nome_canal)
 
         lista_videos = self.__youtube.obter_video_por_data(
             id_canal=id_canal, data_inicio=data_inicio)
@@ -41,6 +43,5 @@ class YoutubeController:
                     id_video=dados_video[0])
                 resumo_gerado_ia = self.__ia_agente.gerar_resumo(
                     texto=transcricao, nome_canal=nome_canal, titulo_video=dados_video[1])
-                print(resumo_gerado_ia)
-                # self.__video_model.inserir_video(
-                #     id_video=dados_video[0], nm_video=dados_video[1], transcricao=resumo_gerado_ia, id_canal=id_canal)
+                self.__video_model.inserir_video(
+                    id_video=dados_video[0], nm_video=dados_video[1], transcricao=resumo_gerado_ia, id_canal=id_canal)

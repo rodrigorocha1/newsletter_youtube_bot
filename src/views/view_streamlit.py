@@ -26,12 +26,15 @@ class ViewStreamlit:
             if botao_pequisar_canal:
 
                 data_combinada = datetime.combine(d, tempo)
-                data_formatada = data_combinada.strftime("%Y-%m-%dT%H:%M:%SZ")
 
                 st.write("Data e hora combinadas em formato ISO 8601:",
-                         type(data_formatada))
+                         type(data_combinada))
 
-                id_canal = self.__controler.gravar_canal(url_canal=url_canal)
+                nome_canal,  id_canal = self.__controler.gravar_canal(
+                    url_canal=url_canal)
+                print(id_canal, nome_canal)
+                self.__controler.gravar_video(
+                    data_inicio=data_combinada, id_canal=id_canal, nome_canal=nome_canal)
 
     def rodar_dashboard(self):
         self.gerar_input()
