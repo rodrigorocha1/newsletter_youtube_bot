@@ -15,7 +15,7 @@ class YoutubeService(IServiceAPI):
         self.__api_key = os.environ['YOUTUBE_API_KEY']
         self.__youtube = build('youtube', 'v3', developerKey=self.__api_key)
 
-    def obter_id_canal(self, nm_canal: str) -> Optional[str]:
+    def obter_id_canal(self, nm_canal: str):
         request = self.__youtube.search().list(
             part="snippet",
             q=nm_canal,
@@ -24,7 +24,7 @@ class YoutubeService(IServiceAPI):
         )
         response = request.execute()
         if 'items' in response and len(response['items']) > 0:
-            return response['items'][0]['id']['channelId']
+            return response['items'][0]['id']['channelId'], response['items'][0]['snippet']['title']
         return None
 
     def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[Tuple[str, str]]:

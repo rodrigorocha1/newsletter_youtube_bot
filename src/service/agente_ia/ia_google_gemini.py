@@ -1,5 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from src.model.agente_ia.iiagente_ia import IIaagente
+from src.interfaces.iiagente_ia import IIaagente
 import os
 
 

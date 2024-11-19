@@ -24,8 +24,6 @@ class DatabaseConnection:
         except Exception:
             session.rollback()
             raise
-        finally:
-            session.close()
 
     def iniciar_banco(self):
         Base.metadata.create_all(bind=self.engine)

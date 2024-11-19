@@ -1,20 +1,11 @@
-from src.model.youtube_service import YoutubeService
+from src.service.youtube.youtube_service import YoutubeService
+from src.service.agente_ia.ia_google_gemini import IaAgenteGemini
 from datetime import datetime
-
+from src.controllers.youtube_controller import YoutubeController
 ys = YoutubeService()
+yc = YoutubeController(ia_agente=IaAgenteGemini())
 
-canal = '@TLESGames'
+canal = '@Sandeco'
 
 
-id_canal = ys.obter_id_canal(nm_canal=canal)
-print(id_canal)
-data_inicio = datetime(2024, 11, 11)
-lista_videos = ys.obter_video_por_data(
-    id_canal=id_canal, data_inicio=data_inicio)
-print(lista_videos)
-
-for dados_video in lista_videos:
-    try:
-        print(ys.obter_transcricao_video(id_video=dados_video[0]))
-    except:
-        pass
+yc.gravar_canal(nome_canal=canal)
