@@ -12,9 +12,20 @@ class IaAgenteGemini(IIaagente):
             temperature=1
         )
 
-    def gerar_resumo(self, texto: str) -> str:
+    def gerar_resumo(self, texto: str, nome_canal: str, titulo_video: str) -> str:
         messages = [
-            ('system', 'Você é um programador python com mais de 20 anos de experiência'),
+            (
+                'system',
+                f""" 
+                    Você tem experiência em criar Newsletter da transcrição dos vídeos do youtube no seguinte formato:
+                    Vídeo: {titulo_video}
+
+                    Canal: {nome_canal}
+
+                    Resumo: aqui vem a transcrição do vídeo resumida
+
+                    Formate em markdown para exibição em metade da página do navegador
+                """),
             ('human', texto),
         ]
         response = self.__llm.invoke(messages)

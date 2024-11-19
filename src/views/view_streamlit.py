@@ -20,7 +20,7 @@ class ViewStreamlit:
             )
             d = st.date_input('Digite a data de públicação do vídeo',
                               datetime(2024, 10, 17, 19, 0, 46), format='DD/MM/YYYY')
-            botao_pequisar_canal = st.button('pesquisar')
+            botao_pequisar_canal = st.button('Cadastrar Canal')
             if botao_pequisar_canal:
                 tempo = st.time_input('Digite a hora de busca')
                 data_combinada = datetime.combine(d, tempo)
@@ -29,7 +29,7 @@ class ViewStreamlit:
                 st.write("Data e hora combinadas em formato ISO 8601:",
                          type(data_formatada))
 
-                self.__controler.gravar_canal(url_canal=url_canal)
+                id_canal = self.__controler.gravar_canal(url_canal=url_canal)
 
     def rodar_dashboard(self):
         self.gerar_input()
