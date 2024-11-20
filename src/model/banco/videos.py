@@ -1,17 +1,19 @@
 from sqlalchemy import Column, String, ForeignKey
 from src.model.banco.config_base import Base
+from sqlalchemy.orm import mapped_column, Mapped
 
 
 class Videos(Base):
     __tablename__ = 'VIDEOS'
-    id_video = Column(
+    id_video: Mapped[str] = mapped_column(
         String,
         primary_key=True,
         index=True
     )
-    id_canal = Column(String, ForeignKey('CANAIS.id_canal'))
-    nm_video = Column(String)
-    transcricao = Column(String)
+    id_canal: Mapped[str] = mapped_column(
+        String, ForeignKey('CANAIS.id_canal'))  # Corrigido aqui
+    nm_video: Mapped[str] = mapped_column(String)
+    transcricao: Mapped[str] = mapped_column(String)
 
     def __repr__(self):
         return (
