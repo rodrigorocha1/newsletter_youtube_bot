@@ -56,8 +56,9 @@ class YoutubeController:
 
         lista_videos = self.__youtube.obter_video_por_data(
             id_canal=id_canal, data_inicio=data_inicio)
+
         for dados_video in lista_videos:
-            print('dados_video,', dados_video)
+
             id_video = self.__video_model.selecionar_video(
                 id_video=dados_video[0])
             if not id_video:
