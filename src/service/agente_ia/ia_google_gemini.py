@@ -1,6 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from src.interfaces.iiagente_ia import IIaagente
 import os
+import time
 
 
 class IaAgenteGemini(IIaagente):
@@ -28,5 +29,6 @@ class IaAgenteGemini(IIaagente):
                 """),
             ('human', texto),
         ]
+        time.sleep(10)
         response = self.__llm.invoke(messages)
         return response.content
