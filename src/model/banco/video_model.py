@@ -30,5 +30,9 @@ class VideoModel:
             Videos.id_video == id_video).first()
         if video:
             id_video = Videos.id_video
+            sessao.close()
             return id_video
+        sessao.close()
         return None
+
+    d

@@ -1,3 +1,4 @@
+from typing import List
 from src.model.banco.canais import Canais
 from src.model.banco.database_connection import DatabaseConnection
 from sqlalchemy.sql import func
@@ -31,3 +32,16 @@ class CanalModel:
             nome_canal = id_canal = canal
 
         return nome_canal, id_canal
+
+    def selecionar_canal_id(self, nome_canal: str):
+        sessao = self.obter_sessao()
+        canal = sessao.query(Canais).filter(
+            func.lower(Canais.nome_canal) == nome_canal.lower()).first()
+        return canal.id_canal
+
+    def selecionar_todos_canais(self):
+        sessao = self.obter_sessao()
+        canais = sessao.query(Canais.nome_canal).all()
+
+        sessao.close()
+        return tuple(canal.nome_canal for canal in canais)
