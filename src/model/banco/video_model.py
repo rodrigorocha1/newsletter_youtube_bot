@@ -27,13 +27,11 @@ class VideoModel:
     def selecionar_video_canal(self, id_canal: str):
         sessao = self.obter_sessao()
         videos = sessao.query(Videos.nm_video).filter(
-            Videos.id_canal == id_canal).first()
-
-        print("Consulta SQL gerada:", str(videos))
+            Videos.id_canal == id_canal)
 
         sessao.close()
         print(videos)
-        return tuple(video for video in videos)
+        return tuple(video.nm_video for video in videos)
 
     def selecionar_video(self, id_video: str):
         sessao = self.obter_sessao()
