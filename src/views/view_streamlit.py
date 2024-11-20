@@ -27,6 +27,7 @@ class ViewStreamlit:
                 data_combinada = datetime.combine(d, tempo)
                 id_canal, nome_canal, flag = self.__controler.gravar_canal(
                     url_canal=url_canal)
+                print(id_canal, url_canal)
                 self.__controler.gravar_video(
                     data_inicio=data_combinada, id_canal=id_canal, nome_canal=nome_canal)
 

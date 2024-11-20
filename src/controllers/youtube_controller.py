@@ -19,27 +19,45 @@ class YoutubeController:
         Tuple[Union[str, Any], Union[str, Any], Literal[True]],
         Literal[False]
     ]:
+        """Método para gravar canal no banco        
+
+        Args:
+            url_canal (str): url canal @
+
+        Returns:
+            Union[ Tuple[str, Optional[str], Literal[False]], Tuple[Union[str, Any], Union[str, Any], Literal[True]], Literal[False] ]: _description_
+        """
         dados_canal = self.__canal_model.selecionar_canal(url_canal=url_canal)
 
         if dados_canal and dados_canal[0]:
-
-            return dados_canal[0], dados_canal[1], False  # Canal já cadastrado
-
+            # Canal já cadastrado
+            return dados_canal[0], dados_canal[1], False
+        id_canal: str
+        nome_canal: str
         id_canal, nome_canal = self.__youtube.obter_id_canal(
             url_canal=url_canal)
         if id_canal:
-            print('a', id_canal, nome_canal)
             self.__canal_model.inserir_canal(
                 id_canal=id_canal, nm_canal=nome_canal, url_canal=url_canal)
-            return id_canal, nome_canal, True  # Canal inserido
+            # Canal inserido
+            return id_canal, nome_canal, True
         else:
-            return False  # Canal não encontrado
+            # Canal não encontrado
+            return False
 
     def gravar_video(self,  id_canal: str, data_inicio: datetime, nome_canal: str):
+        """Método para gravar vódeio
+
+        Args:
+            id_canal (str): id canal
+            data_inicio (datetime): data públicação vídeo
+            nome_canal (str): nome_canal str
+        """
 
         lista_videos = self.__youtube.obter_video_por_data(
             id_canal=id_canal, data_inicio=data_inicio)
         for dados_video in lista_videos:
+            print('dados_video,', dados_video)
             id_video = self.__video_model.selecionar_video(
                 id_video=dados_video[0])
             if not id_video:
@@ -52,10 +70,23 @@ class YoutubeController:
                         id_video=dados_video[0], nm_video=dados_video[1], transcricao=resumo_gerado_ia, id_canal=id_canal)
 
     def gerar_input_canais(self) -> Optional[Tuple[str, ...]]:
+        """Métodp para gerar dados canais
+
+        Returns:
+            Optional[Tuple[str, ...]]: tupla canal
+        """
         canais = self.__canal_model.selecionar_todos_canais()
         return canais
 
-    def gerar_input_video(self, nome_canal: str):
+    def gerar_input_video(self, nome_canal: str) -> Optional[Tuple[str, ...]]:
+        """Método para recuperar lista de vídeos
+
+        Args:
+            nome_canal (str): nome canal
+
+        Returns:
+            Optional[Tuple[str, ...]]: tupla de vídeos ou none
+        """
         id_canal = self.__canal_model.selecionar_canal_id(
             nome_canal=nome_canal)
 
@@ -63,7 +94,7 @@ class YoutubeController:
             id_canal=str(id_canal))
         return lista_videos
 
-    def gerar_transcricao(self, nome_video: str):
+    def gerar_transcricao(self, nome_video: str) -> Optional[str]:
         transcricao = self.__video_model.selecionar_video_nome(
             nome_video=nome_video)
 

@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Union
+from typing import Generator, Optional, Tuple, Union
 from src.interfaces.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
@@ -19,7 +19,7 @@ class YoutubeService(IServiceAPI):
         self.__api_key = os.environ['YOUTUBE_API_KEY']
         self.__youtube = build('youtube', 'v3', developerKey=self.__api_key)
 
-    def obter_id_canal(self, url_canal: str) -> Optional[Tuple[str, str]]:
+    def obter_id_canal(self, url_canal: str) -> Generator[Tuple[str, str], None, None]:
         request = self.__youtube.search().list(
             part="snippet",
             q=url_canal,
@@ -31,24 +31,32 @@ class YoutubeService(IServiceAPI):
             return response['items'][0]['id']['channelId'], response['items'][0]['snippet']['title']
         return None
 
-    def obter_video_por_data(self, id_canal: str, data_inicio: datetime) -> List[Tuple[str, str]]:
+    def obter_video_por_data(self, id_canal: str, data_inicio: datetime):
         data_inicio_string: str = data_inicio.isoformat() + 'Z'
+        flag_token = True
+        token = ''
+        while flag_token:
+            request = self.__youtube.search().list(
+                part="snippet",
+                channelId=id_canal,
+                order="date",
+                publishedAfter=data_inicio_string,
+                pageToken=token,
+                maxResults=50
+            )
 
-        request = self.__youtube.search().list(
-            part="snippet",
-            channelId=id_canal,
-            order="date",
-            publishedAfter=data_inicio_string
-        )
+            response = request.execute()
 
-        response = request.execute()
+            for item in response['items']:
+                video_id = item['id']['videoId']
+                video_title = item['snippet']['title']
+                yield video_id, video_title
 
-        video_ids = list(
-            map(lambda x: (x['id']['videoId'],
-                x['snippet']['title']), response['items'])
-        )
-
-        return video_ids
+            try:
+                token = response['nextPageToken']
+                flag_token = True
+            except KeyError:
+                flag_token = False
 
     def obter_transcricao_video(self, id_video: str) -> Union[str, bool]:
 
