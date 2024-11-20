@@ -50,4 +50,10 @@ class YoutubeController:
         return canais
 
     def gerar_input_video(self, nome_canal: str):
-        id_canal = self.__canal_model.selecionar_canal_id(id_canal=)
+        id_canal = self.__canal_model.selecionar_canal_id(
+            nome_canal=nome_canal)
+        print(id_canal)
+
+        lista_videos = self.__video_model.selecionar_video_canal(
+            id_canal=id_canal)
+        return lista_videos

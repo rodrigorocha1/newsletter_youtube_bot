@@ -39,7 +39,13 @@ class ViewStreamlit:
                 lista_canais
 
             )
-            lista_videos = ''
+            videos = self.__controler.gerar_input_video(nome_canal=canais)
+            print(videos)
+
+            video = st.selectbox(
+                'Selecione o vídeo',
+                videos
+            )
 
     def rodar_dashboard(self):
         self.gerar_input_salvar_canal()

@@ -24,6 +24,17 @@ class VideoModel:
         sessao.commit()
         sessao.close()
 
+    def selecionar_video_canal(self, id_canal: str):
+        sessao = self.obter_sessao()
+        videos = sessao.query(Videos.nm_video).filter(
+            Videos.id_canal == id_canal).first()
+
+        print("Consulta SQL gerada:", str(videos))
+
+        sessao.close()
+        print(videos)
+        return tuple(video for video in videos)
+
     def selecionar_video(self, id_video: str):
         sessao = self.obter_sessao()
         video = sessao.query(Videos).filter(
@@ -34,5 +45,3 @@ class VideoModel:
             return id_video
         sessao.close()
         return None
-
-    d
