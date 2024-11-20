@@ -25,7 +25,7 @@ class ViewStreamlit:
             botao_pequisar_canal = st.button('Cadastrar Canal')
             if botao_pequisar_canal:
                 data_combinada = datetime.combine(d, tempo)
-                id_canal, nome_canal = self.__controler.gravar_canal(
+                id_canal, nome_canal, flag = self.__controler.gravar_canal(
                     url_canal=url_canal)
                 self.__controler.gravar_video(
                     data_inicio=data_combinada, id_canal=id_canal, nome_canal=nome_canal)
@@ -43,8 +43,8 @@ class ViewStreamlit:
                 'Selecione o vídeo',
                 videos
             )
-
-            print(video)
+            transcricao = self.__controler.gerar_transcricao(nome_video=video)
+            st.write(transcricao)
 
     def rodar_dashboard(self):
         self.gerar_input_salvar_canal()

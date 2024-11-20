@@ -25,13 +25,10 @@ class CanalModel:
         sessao = self.obter_sessao()
         canal = sessao.query(Canais).filter(
             func.lower(Canais.url_canal) == url_canal.lower()).first()
+        print(canal)
         if canal:
-            nome_canal = canal.nome_canal
-            id_canal = canal.id_canal
-        else:
-            nome_canal = id_canal = canal
-
-        return nome_canal, id_canal
+            return canal.id_canal, canal.nome_canal
+        return None, None
 
     def selecionar_canal_id(self, nome_canal: str):
         try:

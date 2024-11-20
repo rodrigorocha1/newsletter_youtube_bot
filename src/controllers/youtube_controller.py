@@ -18,7 +18,7 @@ class YoutubeController:
 
         if dados_canal[0]:
 
-            return dados_canal[0], dados_canal[1]  # Canal já cadastrado
+            return dados_canal[0], dados_canal[1], False  # Canal já cadastrado
 
         id_canal, nome_canal = self.__youtube.obter_id_canal(
             url_canal=url_canal)
@@ -26,9 +26,9 @@ class YoutubeController:
             print('a', id_canal, nome_canal)
             self.__canal_model.inserir_canal(
                 id_canal=id_canal, nm_canal=nome_canal, url_canal=url_canal)
-            return id_canal, nome_canal  # Canal inserido
+            return id_canal, nome_canal, True  # Canal inserido
         else:
-            return  # Canal não encontrado
+            return False  # Canal não encontrado
 
     def gravar_video(self,  id_canal: str, data_inicio: datetime, nome_canal: str):
 
