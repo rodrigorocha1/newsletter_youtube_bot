@@ -28,9 +28,7 @@ class VideoModel:
         sessao = self.obter_sessao()
         videos = sessao.query(Videos.nm_video).filter(
             Videos.id_canal == id_canal)
-
         sessao.close()
-        print(videos)
         return tuple(video.nm_video for video in videos)
 
     def selecionar_video(self, id_video: str):

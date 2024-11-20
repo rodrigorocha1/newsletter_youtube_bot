@@ -5,7 +5,11 @@ from dotenv import load_dotenv
 from googleapiclient.discovery import build  # type: ignore
 from datetime import datetime
 from youtube_transcript_api import YouTubeTranscriptApi  # type: ignore
-
+from youtube_transcript_api._errors import (
+    NoTranscriptFound,
+    VideoUnavailable,
+    TranscriptsDisabled,
+)
 load_dotenv()
 
 
@@ -47,8 +51,19 @@ class YoutubeService(IServiceAPI):
         return video_ids
 
     def obter_transcricao_video(self, id_video: str) -> str:
-        transcricao = YouTubeTranscriptApi.get_transcript(
-            video_id=id_video, languages=['pt']
-        )
-        transcricao = '\n'.join([item['text'] for item in transcricao])
-        return transcricao
+
+        try:
+            transcricao = YouTubeTranscriptApi.get_transcript(
+                video_id=id_video, languages=['pt']
+            )
+            transcricao = '\n'.join([item['text']
+                                     for item in transcricao])
+            return transcricao
+        except NoTranscriptFound:
+            return False
+        except TranscriptsDisabled:
+            return False
+        except VideoUnavailable:
+            return False
+        except Exception as e:
+            return False

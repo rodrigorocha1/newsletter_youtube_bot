@@ -40,10 +40,11 @@ class YoutubeController:
             if not id_video:
                 transcricao = self.__youtube.obter_transcricao_video(
                     id_video=dados_video[0])
-                resumo_gerado_ia = self.__ia_agente.gerar_resumo(
-                    texto=transcricao, nome_canal=nome_canal, titulo_video=dados_video[1])
-                self.__video_model.inserir_video(
-                    id_video=dados_video[0], nm_video=dados_video[1], transcricao=resumo_gerado_ia, id_canal=id_canal)
+                if transcricao:
+                    resumo_gerado_ia = self.__ia_agente.gerar_resumo(
+                        texto=transcricao, nome_canal=nome_canal, titulo_video=dados_video[1])
+                    self.__video_model.inserir_video(
+                        id_video=dados_video[0], nm_video=dados_video[1], transcricao=resumo_gerado_ia, id_canal=id_canal)
 
     def gerar_input_canais(self):
         canais = self.__canal_model.selecionar_todos_canais()
