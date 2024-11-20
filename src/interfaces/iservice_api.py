@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 from datetime import datetime
 
 
@@ -14,5 +14,5 @@ class IServiceAPI(ABC):
         pass
 
     @abstractmethod
-    def obter_transcricao_video(self, id_video: str) -> str:
+    def obter_transcricao_video(self, id_video: str) -> Union[str, bool]:
         pass

@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 from src.interfaces.iservice_api import IServiceAPI
 import os
 from dotenv import load_dotenv
@@ -9,7 +9,7 @@ from youtube_transcript_api._errors import (
     NoTranscriptFound,
     VideoUnavailable,
     TranscriptsDisabled,
-)
+)  # type: ignore
 load_dotenv()
 
 
@@ -50,7 +50,7 @@ class YoutubeService(IServiceAPI):
 
         return video_ids
 
-    def obter_transcricao_video(self, id_video: str) -> str:
+    def obter_transcricao_video(self, id_video: str) -> Union[str, bool]:
 
         try:
             transcricao = YouTubeTranscriptApi.get_transcript(
