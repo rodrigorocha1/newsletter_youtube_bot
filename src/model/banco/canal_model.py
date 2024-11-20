@@ -25,7 +25,7 @@ class CanalModel:
         sessao = self.obter_sessao()
         canal = sessao.query(Canais).filter(
             func.lower(Canais.url_canal) == url_canal.lower()).first()
-        print(canal)
+
         if canal:
             return canal.id_canal, canal.nome_canal
         return None, None
