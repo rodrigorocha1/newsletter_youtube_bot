@@ -41,3 +41,16 @@ class VideoModel:
             return id_video
         sessao.close()
         return None
+
+    def selecionar_video_nome(self, nome_video: str):
+        try:
+            sessao = self.obter_sessao()
+            videos = sessao.query(Videos.transcricao).filter(
+                Videos.nm_video == nome_video
+            ).first()
+
+            return videos.transcricao
+        except Exception as e:
+            return False
+        finally:
+            sessao.close()

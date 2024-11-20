@@ -57,3 +57,9 @@ class YoutubeController:
         lista_videos = self.__video_model.selecionar_video_canal(
             id_canal=id_canal)
         return lista_videos
+
+    def gerar_transcricao(self, nome_video: str):
+        transcricao = self.__video_model.selecionar_video_nome(
+            nome_video=nome_video)
+
+        return transcricao
