@@ -29,3 +29,13 @@ SELECT *
 from VIDEOS ;
 
 TRUNCATE TABLE VIDEOS CASCADE;
+
+
+ """Método para selecionar o id canal usando o nome do canal
+
+        Args:
+            nome_canal (str): nome do canal
+
+        Returns:
+            _type_: _description_
+        """

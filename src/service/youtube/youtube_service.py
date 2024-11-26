@@ -19,7 +19,7 @@ class YoutubeService(IServiceAPI):
         self.__api_key = os.environ['YOUTUBE_API_KEY']
         self.__youtube = build('youtube', 'v3', developerKey=self.__api_key)
 
-    def obter_id_canal(self, url_canal: str) -> Generator[Tuple[str, str], None, None]:
+    def obter_id_canal(self, url_canal: str) -> Optional[Tuple[str, str]]:
         request = self.__youtube.search().list(
             part="snippet",
             q=url_canal,

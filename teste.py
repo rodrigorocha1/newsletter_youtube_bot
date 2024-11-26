@@ -5,11 +5,11 @@ from src.controllers.youtube_controller import YoutubeController
 ys = YoutubeService()
 yc = YoutubeController(ia_agente=IaAgenteGemini())
 
-canal = '@crazygamerfabinho'
+canal = 'UCrOH1V-FyMunBIMrKL0y0xQ'
 
 
 data_inicio = datetime(2024, 11, 11)
 
-nome_canal, id_canal = yc.gravar_canal(url_canal=canal)
-yc.gravar_video(id_canal=id_canal, data_inicio=data_inicio,
-                nome_canal=nome_canal)
+
+for vídeo in ys.obter_video_por_data(id_canal=canal, data_inicio=data_inicio):
+    print(vídeo)
