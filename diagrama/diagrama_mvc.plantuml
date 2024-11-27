@@ -1,0 +1,139 @@
+@startuml
+
+package main {
+    package src {
+        package model {
+            package banco {
+                class Canais {
+                    + id_canal : String <<PK>>
+                    + nome_canal : String
+                    + url_canal : String
+                }
+
+                class Base <<abstract>> {
+                }
+
+                class DatabaseConnection {
+                    - CAMINHO_BANCO : String
+                    - DATABASE_URL : String
+                    - engine : Engine
+                    - session_local : Sessionmaker
+                    + obter_sessao() : Session
+                    + iniciar_banco() : void
+                }
+                class CanalModel {
+                    - db : DatabaseConnection
+
+                    + obter_sessao() : Session
+                    + inserir_canal(id_canal: str, nm_canal: str, url_canal: str) : void
+                    + selecionar_canal(url_canal: str) : Tuple[Optional[str], Optional[str]]
+                    + selecionar_canal_id(nome_canal: str) : Optional[str]
+                    + selecionar_todos_canais() : Optional[Tuple[str, ...]]
+                }
+                class Videos {
+                    + id_video : String <<PK>>
+                    + id_canal : String <<FK>>
+                    + nm_video : String
+                    + transcricao : String
+                }
+
+                class VideoModel {
+                    + __db : DatabaseConnection
+                    + __init__() : void
+                    + obter_sessao() : Session
+                    + inserir_video(id_video: str, nm_video: str, transcricao: str, id_canal: str) : void
+                    + selecionar_video_canal(id_canal: str) : Tuple[str, ...]
+                    + selecionar_video(id_video: str) : Optional[str]
+                    + selecionar_video_nome(nome_video: str) : Optional[str]
+                }
+
+
+
+
+
+            }
+        }
+
+        package interface {
+            interface IIaagente {
+                + gerar_resumo(texto: str, nome_canal: str, titulo_video: str) : String
+            }
+            interface IServiceAPI {
+                + obter_id_canal(url_canal: str) : Optional<Tuple<String, String>>
+                + obter_video_por_data(id_canal: str, data_inicio: datetime) : List<Tuple<String, String>>
+                + obter_transcricao_video(id_video: str) : Union<String, Boolean>
+            }
+        }
+
+        package service {
+            package agente_ia {
+                class IaAgenteGemini implements main.src.interface.IIaagente{
+                - key : String
+                - llm : ChatGoogleGenerativeAI
+
+                + gerar_resumo(texto: String, nome_canal: String, titulo_video: String) : String
+            }
+
+            package youtube {
+                class YoutubeService implements main.src.interface.IServiceAPI {
+                    - api_key : String
+                    - youtube : main.src.interface.IServiceAPI
+
+                    + obter_id_canal(url_canal: String) : Optional<Tuple<String, String>>
+                    + obter_video_por_data(id_canal: String, data_inicio: datetime) : Generator<Tuple<String, String>, None, None>
+                    + obter_transcricao_video(id_video: String) : Union<String, bool>
+                }
+            
+            }
+
+
+            }
+        }
+
+        package controller {
+            class YoutubeController {
+                - youtube : YoutubeService
+                - ia_agente : IIaagente
+                - canal_model : CanalModel
+                - video_model : VideoModel
+                + gravar_canal(url_canal: String): Union[Tuple, Literal[False]]
+                + gravar_video(id_canal: String, data_inicio: datetime, nome_canal: String): void
+                + gerar_input_canais(): Optional<Tuple<String, ...>>
+                + gerar_input_video(nome_canal: String): Optional<Tuple<String, ...>>
+                + gerar_transcricao(nome_video: String): Optional<String>
+            }
+
+        }
+        package view {
+            class ViewStreamlit {
+                - ia_agente : IaAgenteGemini
+                - controler : YoutubeController
+                + gerar_input_salvar_canal(): void
+                + mostrar_resumo(): void
+                + rodar_dashboard(): void
+            }
+
+        }
+    }
+    DatabaseConnection *-- Base : "usa"
+    DatabaseConnection "1" *--  CanalModel : "fornece sessões para"
+
+    CanalModel "0..*" *-- "1..*" Canais : "gerencia"
+    Videos "0..*" *-- "1" Canais : "associado a"
+
+    DatabaseConnection "1" *-- "0..*" VideoModel : "fornece sessões para"
+    VideoModel "0..*" *-- "1..*" Videos : "gerencia"
+
+    YoutubeController --> "1" IServiceAPI : usa
+    YoutubeController --> "1" IIaagente : usa
+    YoutubeController --> "1" CanalModel : usa
+    YoutubeController --> "1" VideoModel : usa
+
+    ViewStreamlit --> "1" IIaagente : usa
+    ViewStreamlit --> "1" YoutubeController : usa
+
+
+
+
+}
+@enduml
