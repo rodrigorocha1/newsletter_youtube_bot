@@ -56,3 +56,31 @@ O aplicativo oferece um dashboard interativo onde o usuário pode:
 - **Google Gemini API:** Para gerar transcrições detalhadas dos vídeos.
 - **YouTube API:** Para buscar e obter vídeos de um canal específico.
 - **LangChain:** Para facilitar a integração e reutilização de componentes entre as APIs.
+
+### 5.Observações
+Criar .env com as seguintes variáveis de ambiente
+```
+YOUTUBE_API_KEY
+GOOGLE_API_KEY
+```
+Criar script no banco de dados mysql
+```
+CREATE TABLE canais(
+	id_canal string,
+	nome_canal string,
+	url_canal string
+);
+
+CREATE TABLE "VIDEOS" (
+	id_video VARCHAR NOT NULL, 
+	id_canal VARCHAR, 
+	nm_video VARCHAR, 
+	transcricao VARCHAR, 
+	PRIMARY KEY (id_video), 
+	FOREIGN KEY(id_canal) REFERENCES "CANAIS" (id_canal)
+);
+
+CREATE INDEX "ix_VIDEOS_id_video" ON "VIDEOS" (id_video);
+
+
+```
